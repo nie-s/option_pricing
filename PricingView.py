@@ -3,6 +3,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMainWindow
 
 from BlackScholes import BlackScholes
+from QMonteCarloKIKOPut import QmonteCarloKIKOPut
 
 
 class PricingWindow(QMainWindow):
@@ -114,6 +115,15 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.input_v.setDisabled(True)
+
+        elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Option
+            self.ui.input_q.setDisabled(True)
+            self.ui.input_v.setDisabled(True)
+            self.ui.input_s1.setDisabled(True)
+            self.ui.input_sigma1.setDisabled(True)
+            self.ui.input_rho.setDisabled(True)
+            self.ui.choose_control.setDisabled(True)
+            
         else:  # Binomial Tree for American Option
             self.ui.input_v.setDisabled(True)
             self.ui.input_q.setDisabled(True)
@@ -151,7 +161,9 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         elif self.option_index == 4:  # Monte Carlo with Control Variate for Arithmetic Asian Options
             n = 1
         elif self.option_index == 5:  # Monte Carlo with Control Variate for Arithmetic Basket Options
-            n = 1
+            qmc_kiko_put = QmonteCarloKIKOPut(self.s0, self.sigma0, self.r, self.T, self.K, self.L, self.U, self.R, self.n, self.seed)
+            option_price, delta = qmc_kiko_put.calculate_price_and_delta(self.m)
+            self.ui.result_label.setText(str(result))  
         else:  # Binomial Tree for American Option
             n = 1
 
