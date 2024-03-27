@@ -48,18 +48,28 @@ class MainWidget(QWidget):
 
         self.layout.addWidget(self.choose_label, 0, 1)
         self.layout.addWidget(self.choose_box, 0, 2)
+        self.choose_box.currentIndexChanged.connect(self.on_choose_box_changed) 
 
         self.layout.addWidget(self.type_label, 1, 1)
         self.layout.addWidget(self.type_box, 1, 2)
 
+    
+    def on_choose_box_changed(self, index):  
+        if self.choose_box.currentText() == "Quasi-Monte Carlo for KIKO-put Option":  
+            if "call" in [self.type_box.itemText(i) for i in range(self.type_box.count())]:  
+                self.type_box.removeItem(self.type_box.findText("call"))  
+        else:  
+            if "call" not in [self.type_box.itemText(i) for i in range(self.type_box.count())]:  
+                self.type_box.addItem("call")
+
+    
     def confirm(self):
-        type = ['put', 'call']
-        type = type[self.type_box.currentIndex()]
+        option_type = self.type_box.currentText()  
         option_index = self.choose_box.currentIndex()
 
         self.w.show_pricing_win_signal.emit()
 
-        self.paras.emit([option_index, type])
+        self.paras.emit([option_index,  option_type])
 
         # step 1: choose one method
         # step 2: disable parameters
