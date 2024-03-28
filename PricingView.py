@@ -9,6 +9,7 @@ from ClosedFormBasket import ClosedFormBasket
 from ImpliedVolatility import ImpliedVolatility
 from MonteCarloAsianVC import MonteCarloAsianVC
 from MonteCarloBasket import MonteCarloBasketVC
+from QMonteCarloKIKOPut import QMonteCarloKIKOPut
 
 
 class PricingWindow(QMainWindow):
@@ -120,6 +121,15 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.input_v.setDisabled(True)
+
+        elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Option
+            self.ui.input_q.setDisabled(True)
+            self.ui.input_v.setDisabled(True)
+            self.ui.input_s1.setDisabled(True)
+            self.ui.input_sigma1.setDisabled(True)
+            self.ui.input_rho.setDisabled(True)
+            self.ui.choose_control.setDisabled(True)
+
         else:  # Binomial Tree for American Option
             self.ui.input_v.setDisabled(True)
             self.ui.input_q.setDisabled(True)
@@ -162,15 +172,19 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             mca = MonteCarloAsianVC(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.m, self.type,
                                     self.control)
             result = mca.get_result()
-            result = "value: " + str(result[0]) + "\n lower bond: " + str(result[1]) + "\n upper bond: " + str(result[2])
+            result = "value: " + str(result[0]) + "\nlower bond: " + str(result[1]) + "\nupper bond: " + str(result[2])
         elif self.option_index == 5:  # Monte Carlo with Control Variate for Arithmetic Basket Options
             mcb = MonteCarloBasketVC(self.s0, self.sigma0, self.s1, self.sigma1, self.rho, self.r, self.T, self.K,
                                      self.n, self.m, self.type, self.control)
             result = mcb.get_result()
-            result = "value: " + str(result[0]) + "\n lower bond: " + str(result[1]) + "\n upper bond: " + str(result[2])
+            result = "value: " + str(result[0]) + "\nlower bond: " + str(result[1]) + "\nupper bond: " + str(result[2])
 
         elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Optio
-            n = 1
+            qmc_kiko_put = QMonteCarloKIKOPut(self.s0, self.sigma0, self.r, self.T, self.K, self.L, self.U, self.R,
+                                              self.n, self.seed)
+            option_price, delta = qmc_kiko_put.calculate_price_and_delta(self.m)
+            result = "option price: " + str(option_price) + "\n delta: " + str(delta)
+
         else:  # Binomial Tree for American Option
             bt = BionomalTreeAmerican(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.type)
             result = bt.american_fast_tree()
