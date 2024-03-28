@@ -6,7 +6,7 @@ N = norm.cdf
 
 class MonteCarloBasketVC(object):
 
-    def __init__(self, s1, s2, sigma1, sigma2, rho, r, T, K, n, m, option_type):
+    def __init__(self, s1, s2, sigma1, sigma2, rho, r, T, K, n, m, option_type, control):
         try:
             assert option_type == 'call' or option_type == 'put'
             self.option_type = option_type
@@ -20,6 +20,7 @@ class MonteCarloBasketVC(object):
             self.n = int(n)
             self.m = int(m)
             self.r = float(r)
+            self.control = control
 
         except ValueError:
             print('Error passing Options parameters')
@@ -117,7 +118,13 @@ class MonteCarloBasketVC(object):
         lower_bound_CV = value_with_control_variate - 1.96 * value_with_control_variate_std / np.sqrt(self.m)
         return value_with_control_variate, lower_bound_CV, upper_bound_CV
 
+    def get_result(self):
+        if self.control == True:
+            return self.value()
+        else:
+            return self.value_with_control_variate()
 
-myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call')
-print(myBasketCall.value())
-print(myBasketCall.value_with_control_variate())
+
+# myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call', True)
+# print(myBasketCall.value())
+# print(myBasketCall.value_with_control_variate())

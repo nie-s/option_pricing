@@ -49,5 +49,5 @@ class BionomalTreeAmerican(object):
         return C[0]
 
 
-my_american_tree = BionomalTreeAmerican(100, 0.2, 0.06, 1, 100, 3, 'put')
-print(my_american_tree.american_fast_tree())
+# my_american_tree = BionomalTreeAmerican(100, 0.2, 0.06, 1, 100, 3, 'put')
+# print(my_american_tree.american_fast_tree())

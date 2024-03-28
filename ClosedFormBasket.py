@@ -4,7 +4,7 @@ from scipy.stats import norm
 N = norm.cdf
 
 
-class CloasedFormBasket(object):
+class ClosedFormBasket(object):
 
     def __init__(self, s1, s2, sigma1, sigma2, rho, r, T, K, option_type):
         try:
@@ -45,6 +45,12 @@ class CloasedFormBasket(object):
 
         return np.exp(-(self.r * self.T)) * (-S * np.exp(mu * self.T) * N(-d1) + self.K * N(-d2))
 
+    def get_result(self):
+        if self.option_type == 'call':
+            return self.cf_basket_call()
+        else:
+            return self.cf_basket_put()
 
-myBSbasket = CloasedFormBasket(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 4, 'call')
-print(myBSbasket.cf_basket_call())
+
+# myBSbasket = ClosedFormBasket(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 4, 'call')
+# print(myBSbasket.cf_basket_call())

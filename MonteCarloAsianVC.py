@@ -6,7 +6,7 @@ N = norm.cdf
 
 class MonteCarloAsianVC(object):
 
-    def __init__(self, s0, sigma, r, T, K, n, m, option_type):
+    def __init__(self, s0, sigma, r, T, K, n, m, option_type, control):
         try:
             assert option_type == 'call' or option_type == 'put'
             self.option_type = option_type
@@ -17,6 +17,7 @@ class MonteCarloAsianVC(object):
             self.n = int(n)
             self.m = int(m)
             self.r = float(r)
+            self.control = control
 
         except ValueError:
             print('Error passing Options parameters')
@@ -83,7 +84,13 @@ class MonteCarloAsianVC(object):
         lower_bound_CV = value_with_control_variate - 1.96 * value_with_control_variate_std / np.sqrt(self.m)
         return value_with_control_variate, lower_bound_CV, upper_bound_CV
 
+    def get_result(self):
+        if self.control == True:
+            return self.value()
+        else:
+            return self.value_with_control_variate()
 
-myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call')
-print(myAsianCall.value())
-print(myAsianCall.value_with_control_variate())
+
+# myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call', True)
+# print(myAsianCall.value())
+# print(myAsianCall.value_with_control_variate())

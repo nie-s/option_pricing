@@ -44,3 +44,9 @@ class ClosedFormAsian(object):
         put = np.exp(-(self.r * self.T)) * (self.K * N(-d2) - self.s0 * np.exp(mu * self.T) * N(-d1))
 
         return put
+
+    def get_result(self):
+        if self.option_type == 'call':
+            return self.cf_asian_call()
+        else:
+            return self.cf_asian_put()

@@ -2,7 +2,13 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QMainWindow
 
+from BionomalTreeAmerican import BionomalTreeAmerican
 from BlackScholes import BlackScholes
+from ClosedFormAsian import ClosedFormAsian
+from ClosedFormBasket import ClosedFormBasket
+from ImpliedVolatility import ImpliedVolatility
+from MonteCarloAsianVC import MonteCarloAsianVC
+from MonteCarloBasket import MonteCarloBasketVC
 
 
 class PricingWindow(QMainWindow):
@@ -137,23 +143,39 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
 
     def calculate(self):
         self.get_values()
+        result = ""
 
         if self.option_index == 0:  # Black-Sholes Formulas for European option
             bs = BlackScholes(self.s0, self.sigma0, self.r, self.q, self.T, self.K, self.type)
             result = bs.get_result()
-            self.ui.result_label.setText(str(result))
         elif self.option_index == 1:  # Implied Volatility
-            n = 1
+            iv = ImpliedVolatility(self.s0, self.r, self.q, self.T, self.K, self.V, self.type)
+            result = iv.get_result()
         elif self.option_index == 2:  # Closed-form Formulas for Geometric Asian Options
-            n = 1
+            cfa = ClosedFormAsian(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.type)
+            result = cfa.get_result()
         elif self.option_index == 3:  # Closed-form Formulas for Geometric Basket Options
-            n = 1
+            cfb = ClosedFormBasket(self.s0, self.sigma0, self.s1, self.sigma1, self.rho, self.r, self.T, self.K,
+                                   self.type)
+
         elif self.option_index == 4:  # Monte Carlo with Control Variate for Arithmetic Asian Options
-            n = 1
+            mca = MonteCarloAsianVC(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.m, self.type,
+                                    self.control)
+            result = mca.get_result()
+            result = "value: " + str(result[0]) + "\n lower bond: " + str(result[1]) + "\n upper bond: " + str(result[2])
         elif self.option_index == 5:  # Monte Carlo with Control Variate for Arithmetic Basket Options
+            mcb = MonteCarloBasketVC(self.s0, self.sigma0, self.s1, self.sigma1, self.rho, self.r, self.T, self.K,
+                                     self.n, self.m, self.type, self.control)
+            result = mcb.get_result()
+            result = "value: " + str(result[0]) + "\n lower bond: " + str(result[1]) + "\n upper bond: " + str(result[2])
+
+        elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Optio
             n = 1
         else:  # Binomial Tree for American Option
-            n = 1
+            bt = BionomalTreeAmerican(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.type)
+            result = bt.american_fast_tree()
+
+        self.ui.result_label.setText(str(result))
 
     def get_values(self):
         self.s0 = self.ui.input_s0.toPlainText()
@@ -171,3 +193,5 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         self.n = self.ui.input_n.toPlainText()
         self.q = self.ui.input_q.toPlainText()
         self.r = self.ui.input_r.toPlainText()
+
+        self.control = self.ui.choose_control.isChecked()

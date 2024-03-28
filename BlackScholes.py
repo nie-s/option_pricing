@@ -42,6 +42,6 @@ class BlackScholes(object):
             return self.bs_put()
 
 
-bs = BlackScholes(100, 0.3, 0.05, 0.01, 3, 100, 'put')
-print(bs.bs_put())
+# bs = BlackScholes(100, 0.3, 0.05, 0.01, 3, 100, 'put')
+# print(bs.bs_put())
 # print(bs.bs_asian_put())
