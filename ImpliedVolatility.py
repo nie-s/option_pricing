@@ -21,6 +21,7 @@ class ImpliedVolatility(object):
             self.sigma = self.init_sigma()
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
     def init_sigma(self):
         sigma = np.sqrt(2 * abs((np.log(self.s0 / self.K) + (self.r - self.q) * (self.T)) / (self.T)))

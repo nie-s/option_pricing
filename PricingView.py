@@ -1,6 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QMainWindow
+from PyQt5.QtWidgets import QWidget, QMainWindow, QMessageBox
 
 from BionomalTreeAmerican import BionomalTreeAmerican
 from BlackScholes import BlackScholes
@@ -35,7 +35,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         self.ui = uic.loadUi('PricingView.ui', self)
 
         self.ui.back_button.clicked.connect(self.go_back)
-        self.ui.pricing_button.clicked.connect(self.calculate)
+        self.ui.pricing_button.clicked.connect(self.check_blanks)
 
     def enable_all(self):
         self.ui.input_v.setDisabled(False)
@@ -153,6 +153,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
 
     def calculate(self):
         self.get_values()
+
         result = ""
 
         if self.option_index == 0:  # Black-Sholes Formulas for European option
@@ -209,3 +210,43 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         self.r = self.ui.input_r.toPlainText()
 
         self.control = self.ui.choose_control.isChecked()
+
+    def check_blanks(self):
+        non_blank = True
+        if self.ui.input_s0.isEnabled() and self.ui.input_s0.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_s1.isEnabled() and self.ui.input_s1.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_sigma0.isEnabled() and self.ui.input_sigma0.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_sigma1.isEnabled() and self.ui.input_sigma1.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_rho.isEnabled() and self.ui.input_rho.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_K.isEnabled() and self.ui.input_K.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_L.isEnabled() and self.ui.input_L.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_R.isEnabled() and self.ui.input_R.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_T.isEnabled() and self.ui.input_T.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_U.isEnabled() and self.ui.input_U.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_m.isEnabled() and self.ui.input_m.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_n.isEnabled() and self.ui.input_n.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_q.isEnabled() and self.ui.input_q.toPlainText() == '':
+            non_blank = False
+        if self.ui.input_r.isEnabled() and self.ui.input_r.toPlainText() == '':
+            non_blank = False
+
+        if not non_blank:
+            QMessageBox.information(self, "Warning", "Missing parameter(s)", QMessageBox.Ok, QMessageBox.Ok)
+        else:
+            try:
+                self.calculate()
+            except ValueError:
+                QMessageBox.information(self, "Warning", "Error passing Options parameter(s)", QMessageBox.Ok, QMessageBox.Ok)
+

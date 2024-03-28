@@ -21,6 +21,7 @@ class MonteCarloAsianVC(object):
 
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
         # if option_type != 'call' and option_type != 'put':
         #     raise ValueError("Error: option type not valid. Enter 'call' or 'put'")

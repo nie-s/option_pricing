@@ -20,6 +20,7 @@ class ClosedFormAsian(object):
             self.n = int(n)
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
     def cf_asian_call(self):
         sigma_hat = self.sigma * math.sqrt(((self.n + 1) * (2 * self.n + 1)) / (6 * self.n ** 2))

@@ -21,6 +21,7 @@ class BionomalTreeAmerican(object):
 
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
     def american_fast_tree(self):
         # precompute values

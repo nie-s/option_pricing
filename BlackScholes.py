@@ -18,6 +18,7 @@ class BlackScholes(object):
             self.q = float(q)
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
     def bs_call(self):
         d1 = (np.log(self.s0 / self.K) + (self.r - self.q) * (self.T)) / (self.sigma * np.sqrt(self.T)) + (

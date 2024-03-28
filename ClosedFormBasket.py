@@ -22,6 +22,7 @@ class ClosedFormBasket(object):
             self.r = float(r)
         except ValueError:
             print('Error passing Options parameters')
+            raise
 
     def cf_basket_call(self):
         v = 1 / 2 * np.sqrt((self.sigma1 ** 2) + 2 * self.sigma1 * self.sigma2 * self.rho + self.sigma2 ** 2)
