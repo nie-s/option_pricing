@@ -1,62 +1,68 @@
 import unittest  
 import numpy as np  
-from scipy.stats import norm  
 from MonteCarloBasket import MonteCarloBasketVC  
-   
   
-# 设定测试案例  
-test_cases = [  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.9, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.1, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 80,  'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 120, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.5, 'sigma2': 0.5, 'rho': 0.5, 'option_type': 'put'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'call'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.9, 'option_type': 'call'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.1, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'call'},  
-    {'s1': 100, 's2': 100, 'K': 80,  'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'call'},  
-    {'s1': 100, 's2': 100, 'K': 120, 'sigma1': 0.3, 'sigma2': 0.3, 'rho': 0.5, 'option_type': 'call'},  
-    {'s1': 100, 's2': 100, 'K': 100, 'sigma1': 0.5, 'sigma2': 0.5, 'rho': 0.5, 'option_type': 'call'}  
-]  
+# Fix the parameters  
+r = 0.05  
+T = 3  
+n = 100
+m = 100000  # Number of paths  
 
-np.random.seed(42) 
-
-class TestMonteCarloBasket(unittest.TestCase): 
-    def setUp(self):  
-        # 通用参数  
-        self.r = 0.05  
-        self.T = 3  
-        self.S0 = 100  
-        self.m = 100000
-        self.n = 100  
-
-    def test_put_basket(self):  
-        for case in test_cases:   
-            mc_basket = MonteCarloBasketVC(  
-                s1=case['s1'], s2=case['s2'], K=case['K'],  
-                sigma1=case['sigma1'], sigma2=case['sigma2'], rho=case['rho'],  
-                r=self.r, T=self.T, n=self.n, m=self.m, option_type=case['option_type']  
-            ) 
-
-            value_mc = mc_basket.value()  
-            value_cv = mc_basket.value_with_control_variate()  
-
-            self.assertIsInstance(value_mc, tuple)  
-            self.assertIsInstance(value_cv, tuple)
+# Set the random seed for reproducibility  
+np.random.seed(42)  
+  
+class TestMonteCarloAsianOptions(unittest.TestCase):  
+      
+    def test_put_basketoptions(self):  
+        # Test put options 
+        s1 = [100, 100, 100, 100, 100, 100]
+        s2 = [100, 100, 100, 100, 100, 100]
+        sigma1 = [0.3, 0.3, 0.1, 0.3, 0.3, 0.5]
+        sigma2=[0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+        rho =[0.5, 0.9, 0.5, 0.5, 0.5, 0.5]
+        K =[100, 100, 100, 80, 120, 100] 
+       
+        for s1_i, s2_i, sigma1_i, sigma2_i, rho_i, K_i in zip(s1, s2, sigma1, sigma2, rho, K):  
+            basket_vc = MonteCarloBasketVC(s1_i, s2_i, sigma1_i, sigma2_i, rho_i, r, T, K_i, n, m, 'put', False)   
+        
+            mc_value, lower_bound, upper_bound = basket_vc.value()   
+            self.assertGreaterEqual(mc_value, 0, f"Put option MC value without control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")
+            self.assertGreaterEqual(lower_bound, 0, f"Put option lower_bound value without control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")  
+            self.assertGreaterEqual(upper_bound, 0, f"Put option upper_bound value without control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}") 
+          
+        for s1_i, s2_i, sigma1_i, sigma2_i, rho_i, K_i in zip(s1, s2, sigma1, sigma2, rho, K):    
+            basket_vc = MonteCarloBasketVC(s1_i, s2_i, sigma1_i, sigma2_i, rho_i, r, T, K, n, m, 'put', True)  
+        
+            value_with_control_variate, lower_bound_CV, upper_bound_CV = basket_vc.value_with_control_variate()  
+            self.assertGreaterEqual(value_with_control_variate, 0, f"Put option MC value with control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")
+            self.assertGreaterEqual(lower_bound_CV, 0, f"Put option lower_bound value with control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")  
+            self.assertGreaterEqual(upper_bound_CV, 0, f"Put option upper_bound_CV value with control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")
+      
+    def test_call_basketoptions(self):  
+        # Test put options 
+        s1 = [100, 100, 100, 100, 100, 100]
+        s2 = [100, 100, 100, 100, 100, 100]
+        sigma1 = [0.3, 0.3, 0.1, 0.3, 0.3, 0.5]
+        sigma2=[0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+        rho =[0.5, 0.9, 0.5, 0.5, 0.5, 0.5]
+        K =[100,100,100,80,120,100]   
+        
+        for s1_j, s2_j, sigma1_j, sigma2_j, rho_j, K_j in zip(s1, s2, sigma1, sigma2, rho, K):  
+            basket_vc = MonteCarloBasketVC(s1_j, s2_j, sigma1_j, sigma2_j, rho_j, r, T, K_j, n, m, 'call', False)    
             
-            print(f"Test case: {case}") 
+            mc_value, lower_bound, upper_bound = basket_vc.value()    
+            self.assertGreaterEqual(mc_value, 0, f"Call option MC value without control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}")
+            self.assertGreaterEqual(lower_bound, 0, f"Call option lower_bound value without control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}")  
+            self.assertGreaterEqual(upper_bound, 0, f"Call option upper_bound value without control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}") 
 
-            # 打印 Monte Carlo Value  
-            print(f"Monte Carlo Value:")  
-            for idx, val in enumerate(value_mc):  
-                print(f"  Element {idx}: {val:.4f}")  
-  
-            # 打印 Monte Carlo Value with Control Variate  
-            print(f"Monte Carlo Value with Control Variate:")  
-            for idx, val in enumerate(value_cv):  
-                print(f"Element {idx}: {val:.4f}")    
-
-
+        for s1_j, s2_j, sigma1_j, sigma2_j, rho_j, K_j in zip(s1, s2, sigma1, sigma2, rho, K):  
+            basket_vc = MonteCarloBasketVC(s1_j, s2_j, sigma1_j, sigma2_j, rho_j, r, T, K_j, n, m, 'call', True)
+ 
+            value_with_control_variate, lower_bound_CV, upper_bound_CV = basket_vc.value_with_control_variate()  
+            self.assertGreaterEqual(value_with_control_variate, 0, f"Call option price with control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}") 
+            self.assertGreaterEqual(lower_bound_CV, 0, f"Call option lower_bound with control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}")  
+            self.assertGreaterEqual(upper_bound_CV, 0, f"Call option upper_bound with control variate should be non-negative for s1={s1_j}, s2={s2_j}, sigma1={sigma1_j}, sigma2={sigma2_j}, rho={rho_j}, K={K_j}")   
+              
+            
 if __name__ == '__main__':  
-    unittest.main()        
+    unittest.main()
