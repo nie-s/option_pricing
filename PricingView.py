@@ -50,6 +50,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         self.ui.input_R.setDisabled(False)
         self.ui.choose_control.setDisabled(False)
         self.ui.input_sigma0.setDisabled(False)
+        self.ui.input_seed.setDisabled(False)
 
     def initial(self):
         # ["Black-Sholes Formulas for European option", "Implied Volatility",
@@ -73,6 +74,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.choose_control.setDisabled(True)
+            self.ui.input_seed.setDisabled(False)
         elif self.option_index == 1:  # Implied Volatility
             self.ui.input_sigma0.setDisabled(True)
             self.ui.input_n.setDisabled(True)
@@ -84,6 +86,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.choose_control.setDisabled(True)
+            self.ui.input_seed.setDisabled(False)
         elif self.option_index == 2:  # Closed-form Formulas for Geometric Asian Options
             self.ui.input_q.setDisabled(True)
             self.ui.input_m.setDisabled(True)
@@ -95,7 +98,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_R.setDisabled(True)
             self.ui.choose_control.setDisabled(True)
             self.ui.input_v.setDisabled(True)
-
+            self.ui.input_seed.setDisabled(False)
         elif self.option_index == 3:  # Closed-form Formulas for Geometric Basket Options
             self.ui.input_q.setDisabled(True)
             self.ui.input_m.setDisabled(True)
@@ -103,7 +106,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.input_v.setDisabled(True)
-
+            self.ui.input_seed.setDisabled(False)
             self.ui.choose_control.setDisabled(True)
         elif self.option_index == 4:  # Monte Carlo with Control Variate for Arithmetic Asian Options
             self.ui.input_q.setDisabled(True)
@@ -114,14 +117,14 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.input_v.setDisabled(True)
-
+            self.ui.input_seed.setDisabled(False)
         elif self.option_index == 5:  # Monte Carlo with Control Variate for Arithmetic Basket Options
             self.ui.input_q.setDisabled(True)
             self.ui.input_L.setDisabled(True)
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.input_v.setDisabled(True)
-
+            self.ui.input_seed.setDisabled(False)
         elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Option
             self.ui.input_q.setDisabled(True)
             self.ui.input_v.setDisabled(True)
@@ -141,7 +144,8 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             self.ui.input_U.setDisabled(True)
             self.ui.input_R.setDisabled(True)
             self.ui.choose_control.setDisabled(True)
-
+            self.ui.input_seed.setDisabled(False)
+            
     def go_back(self):
         self.pricing.show_main_win_signal.emit()
 
@@ -181,10 +185,9 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             result = "value: " + str(result[0]) + "\nlower bond: " + str(result[1]) + "\nupper bond: " + str(result[2])
 
         elif self.option_index == 6:  # Quasi-Monte Carlo for KIKO-put Optio
-            qmc_kiko_put = QMonteCarloKIKOPut(self.s0, self.sigma0, self.r, self.T, self.K, self.L, self.U, self.R,
-                                              self.n, self.seed)
-            option_price, delta = qmc_kiko_put.calculate_price_and_delta(self.m)
-            result = "option price: " + str(option_price) + "\n delta: " + str(delta)
+            qmc_kiko_put = QMonteCarloKIKOPut(self.s0, self.K, self.L, self.U, self.R, self.r, self.sigma0, self.T, self.m, self.n, self.seed)
+            result = qmc_kiko_put.get_result()
+            result = "option price: " + str(result[0]) + "\n delta: " + str(result[1])
 
         else:  # Binomial Tree for American Option
             bt = BionomalTreeAmerican(self.s0, self.sigma0, self.r, self.T, self.K, self.n, self.type)
@@ -208,7 +211,7 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
         self.n = self.ui.input_n.toPlainText()
         self.q = self.ui.input_q.toPlainText()
         self.r = self.ui.input_r.toPlainText()
-
+        self.seed = self.ui.input_seed.toPlainText()
         self.control = self.ui.choose_control.isChecked()
 
     def check_blanks(self):
@@ -241,7 +244,9 @@ class PricingWidget(QWidget):  # 显示各种结果曲线、拍摄视频的页�
             non_blank = False
         if self.ui.input_r.isEnabled() and self.ui.input_r.toPlainText() == '':
             non_blank = False
-
+        if self.ui.input_seed.isEnabled() and self.ui.input_seed.toPlainText() == '':
+            non_blank = False
+            
         if not non_blank:
             QMessageBox.information(self, "Warning", "Missing parameter(s)", QMessageBox.Ok, QMessageBox.Ok)
         else:
