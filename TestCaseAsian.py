@@ -50,7 +50,7 @@ class TestMonteCarloAsianOptions(unittest.TestCase):
             self.assertGreaterEqual(upper_bound_without_cv, 0, f"Call option upper_bound value without control variate should be non-negative for sigma={sigma_j}, K={K_j}, n={n_j}") 
 
         for sigma_i, K_i, n_i in zip(sigma, K, n):  
-            asian_vc = MonteCarloAsianVC(s0, sigma_i, r, T, K_i, m, n_i, 'call', False) 
+            asian_vc = MonteCarloAsianVC(s0, sigma_i, r, T, K_i, m, n_i, 'call', True) 
  
             value_with_control_variate, lower_bound_CV, upper_bound_CV = asian_vc.value_with_control_variate()  
             self.assertGreaterEqual(value_with_control_variate, 0, f"Call option price with control variate should be non-negative for sigma={sigma_j}, K={K_j}, n={n_j}") 
