@@ -20,9 +20,9 @@ class TestMonteCarloAmericaOptions(unittest.TestCase):
         
         for s0_i, K_i, T_i in zip(s0, K, T):  
             america_price = BionomalTreeAmerican(s0_i, sigma, r, T_i, K_i, n, 'put')  
-        
-            S = america_price.american_fast_tree()  
-            self.assertGreaterEqual(S, 0, f"Bionomal Tree American put option price should be non-negative for s0={s0_i}, K={K_i}, T={T_i}")
+
+            C = america_price.american_fast_tree()  
+            self.assertGreaterEqual(C, 0, f"Bionomal Tree American put option price should be non-negative for s0={s0_i}, K={K_i}, T={T_i}")
             
           
     def test_call_america(self):  
@@ -34,8 +34,8 @@ class TestMonteCarloAmericaOptions(unittest.TestCase):
         for s0_j, K_j, T_j in zip(s0, K, T):  
             america_price = BionomalTreeAmerican(s0_j, sigma, r, T_j, K_j, n, 'call')  
         
-            S = america_price.american_fast_tree()  
-            self.assertGreaterEqual(S, 0, f"Bionomal Tree American call option price should be non-negative for s0={s0_j}, K={K_j}, T={T_j}")
+            C = america_price.american_fast_tree()  
+            self.assertGreaterEqual(C, 0, f"Bionomal Tree American call option price should be non-negative for s0={s0_j}, K={K_j}, T={T_j}")
                 
             
 if __name__ == '__main__':  
