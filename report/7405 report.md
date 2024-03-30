@@ -62,12 +62,14 @@ And for other classes, here takes `MonteCarloAsianVC` as example. The program is
 
 - Calculate the standard error
 
+The `QMonteCarloKIKOPut` class is specifically designed to calculate the price and delta of KIKO put options. Distinct from classes such as `MonteCarloAsianVC`, it employs the Quasi-Monte Carlo method, focusing its research on barrier put options.
 
 
-## 4 Test Cases and Analysis 
+## 4 Test Cases
+We designed four test classes to test our pricer, which are used for Asian option, basket option, American option, and KIKO put option.
 
 
-
+## 5 Sensitivity Analysis
 
 
 

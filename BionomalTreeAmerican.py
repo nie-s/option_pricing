@@ -36,7 +36,8 @@ class BionomalTreeAmerican(object):
             C = np.maximum(0, self.K - S)
         else:
             C = np.maximum(0, S - self.K)
-
+       
+        
         # backward recursion through the tree
         for i in np.arange(self.n - 1, -1, -1):
             S = self.s0 * self.d ** (np.arange(i, -1, -1)) * self.u ** (np.arange(0, i + 1, 1))
@@ -46,7 +47,7 @@ class BionomalTreeAmerican(object):
                 C = np.maximum(C, self.K - S)
             else:
                 C = np.maximum(C, S - self.K)
-
+        print(S)
         return C[0]
 
 
