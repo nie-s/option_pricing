@@ -47,7 +47,7 @@ class BionomalTreeAmerican(object):
                 C = np.maximum(C, self.K - S)
             else:
                 C = np.maximum(C, S - self.K)
-        print(S)
+        print(C[0])
         return C[0]
 
 
