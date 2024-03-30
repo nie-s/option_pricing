@@ -31,7 +31,7 @@ class TestMonteCarloAsianOptions(unittest.TestCase):
             self.assertGreaterEqual(upper_bound, 0, f"Put option upper_bound value without control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}") 
           
         for s1_i, s2_i, sigma1_i, sigma2_i, rho_i, K_i in zip(s1, s2, sigma1, sigma2, rho, K):    
-            basket_vc = MonteCarloBasketVC(s1_i, s2_i, sigma1_i, sigma2_i, rho_i, r, T, K, n, m, 'put', True)  
+            basket_vc = MonteCarloBasketVC(s1_i, s2_i, sigma1_i, sigma2_i, rho_i, r, T, K_i, n, m, 'put', True)  
         
             value_with_control_variate, lower_bound_CV, upper_bound_CV = basket_vc.value_with_control_variate()  
             self.assertGreaterEqual(value_with_control_variate, 0, f"Put option MC value with control variate should be non-negative for s1={s1_i}, s2={s2_i}, sigma1={sigma1_i}, sigma2={sigma2_i}, rho={rho_i}, K={K_i}")
