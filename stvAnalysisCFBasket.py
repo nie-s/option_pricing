@@ -8,7 +8,7 @@ if module_path not in sys.path:
     sys.path.append(module_path)
 
 from ClosedFormBasket import ClosedFormBasket
-title= 'Geometric Basket'
+title= 'Closed Form Basket'
 
 
 """
