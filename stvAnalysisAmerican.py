@@ -141,8 +141,6 @@ r = 0.01
 n = 200
 price=[]
 param=[]
-price=[]
-param=[]
 for sigma in range(1,100,1):
     sigma = sigma*0.01
     C = BionomalTreeAmerican(s0, sigma, r, T, K, n, 'call')
@@ -173,8 +171,6 @@ K= 60
 t = 0
 r = 0.01
 n = 200
-price=[]
-param=[]
 price=[]
 param=[]
 for sigma in range(1,100,1):
@@ -209,8 +205,6 @@ r = 0.01
 n = 200
 price=[]
 param=[]
-price=[]
-param=[]
 for sigma in range(1,100,1):
     sigma = sigma*0.01
     C = BionomalTreeAmerican(s0, sigma, r, T, K, n, 'put')
@@ -241,8 +235,6 @@ K= 35
 t = 0
 r = 0.01
 n = 200
-price=[]
-param=[]
 price=[]
 param=[]
 for sigma in range(1,100,1):
