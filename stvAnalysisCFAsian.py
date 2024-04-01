@@ -8,7 +8,7 @@ if module_path not in sys.path:
     sys.path.append(module_path)
 
 from MonteCarloAsianVC import MonteCarloAsianVC   
-title = 'Geometric Asian'
+title = 'Closed Form Asian'
 
 
 """
