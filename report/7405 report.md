@@ -66,11 +66,46 @@ The `QMonteCarloKIKOPut` class is specifically designed to calculate the price a
 
 
 ## 4 Test Cases
-We designed four test classes to test our pricer, which are used for Asian option, basket option, American option, and KIKO put option.
+We designed four test classes to test our pricer, which are used for Asian option, basket option, American option, and KIKO put option. The relationship between options, test programs and data transfer files is as follows.
 
+| Options | program | CSV File |
+| :---         | :---         | :---         |
+| Monte Carlo Asian   | TestCaseAsian.py     | asian_options_results.csv    |
+| Monte Carlo Basket     | TestCaseBasket.py       | basket_options_results.csv      |
+| Binomial Tree American     | TestCaseAmerican.py       | american_options_results.csv      |
+| Quasi-Monte Carlo  KIKO-put     | TestCaseQMC.py       | KIKO_options_results.csv      |
 
 ## 5 Sensitivity Analysis
+。We conducted sensitivity analysis on important options and their parameters using python to generate charts. This part of the code all starts with stvAnalysis, where we plot each change, but for the sake of brevity in the report, only plots for some special cases are included here. All images can be found in the `SensitiveAnalysisPlots` folder.
+| Options | program |
+| :---         | :---         | 
+| Binomial Tree American     | stvAnalysisAmerican.py       |    
+| Closed Form Asian   | stvAnalysisCFAsian.py     | 
+| Closed Form Basket     | stvAnalysisCFBasket.py       | 
+| Quasi-Monte Carlo KIKO-put     | stvAnalysisKIKO.py       | 
+| Monte Carlo Asian   | stvAnalysisMCAsian.py     | asian_options_results.csv    |
+| Monte Carlo Basket     | stvAnalysisMCBasket.py       | basket_options_results.csv      |
 
+### 5.1 Binomial Tree American
+
+
+### 5.2 Closed Form Asian
+
+
+### 5.3 Closed Form Basket
+
+
+### 5.4 Quasi-Monte Carlo KIKO-put
+
+
+### 5.5 Monte Carlo Asian
+
+
+### 5.6 Monte Carlo Basket
+
+
+
+Strike Price, Maturity, Volatility, Risk Free Rate, Number of Time Steps in Binomial Tree
 
 
 
