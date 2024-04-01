@@ -193,6 +193,7 @@ plt.xlabel('Volatility')
 plt.show()
 
 """
+
 How Volatility Affects Put Option Price
 
 """
@@ -258,7 +259,6 @@ plt.xlabel('Volatility')
 plt.show()
 
 
-
 """
 
 How Risk Free Rate Affects Call Option Price
@@ -286,7 +286,6 @@ plt.xlabel('Risk Free Rate')
 plt.ylabel('Call Option Price')
 plt.title(title+ ' Call Option')
 plt.show()
-
 
 
 """
