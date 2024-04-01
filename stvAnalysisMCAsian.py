@@ -130,7 +130,7 @@ plt.show()
 
 How Volatility Affects Call Option Price
 
-
+"""
 
 fig, ax = plt.subplots(3, sharex=True, figsize=[11, 9])
 fig.suptitle(title+ ' Call Option')
@@ -192,10 +192,10 @@ fig.legend(loc='upper left')
 plt.xlabel('Volatility')
 plt.show()
 
-
+"""
 How Volatility Affects Put Option Price
 
-
+"""
 
 fig, ax = plt.subplots(3, sharex=True, figsize=[11, 9])
 fig.suptitle(title+ ' Put Option')
@@ -256,7 +256,7 @@ ax[2].set_ylabel('Put Option price')
 fig.legend(loc='upper left')
 plt.xlabel('Volatility')
 plt.show()
-"""
+
 
 
 """
