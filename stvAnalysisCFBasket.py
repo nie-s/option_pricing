@@ -150,7 +150,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'call')
@@ -168,7 +168,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'call')
@@ -186,7 +186,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'call')
@@ -221,7 +221,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'put')
@@ -239,7 +239,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'put')
@@ -257,7 +257,7 @@ rho = 0.5
 price=[]
 param=[]
 
-for sigma_val in np.arange(0.01, 1.0, 0.01):  # 生成一个从0.01到0.99的数组，步长为0.01  
+for sigma_val in np.arange(1, 10, 1):  # 生成一个从0.01到0.99的数组，步长为0.01  
     sigma1 = sigma_val  
     sigma2 = sigma_val
     C = ClosedFormBasket(s1, s2, sigma1, sigma2, rho, r, T, K, 'put')
@@ -610,4 +610,5 @@ plt.xlabel('Spot Price Ratio')
 plt.ylabel('Put Option Price')
 plt.title(title+ ' Put Option')
 plt.show()
+
 
