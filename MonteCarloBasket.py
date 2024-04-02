@@ -128,7 +128,7 @@ class MonteCarloBasketVC(object):
             return self.value_with_control_variate()
 
 
-myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call', True)
+# myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call', True)
 # print(myBasketCall.value())
 # myBasketCall.value_with_control_variate()
-print(myBasketCall.value_with_control_variate())
+# print(myBasketCall.value_with_control_variate())
