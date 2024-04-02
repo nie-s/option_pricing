@@ -69,8 +69,11 @@ class MonteCarloBasketVC(object):
         return price_path1, price_path2
 
     def mc_payoff(self):
-        geo1, geo2 = self.basket_geo()
-        ave = 1 / 2 * (geo2 + geo1)
+        path1, path2 = self.price_paths()
+
+        ave = np.exp((1 / 2) * (np.log(path1) + np.log(path2)))
+        ave = np.exp((1 / float(self.n)) * np.sum(np.log(ave), 1))
+
         if self.option_type == 'call':
             mc_payoff = self.discount * np.maximum(ave - self.K, 0)
         else:
@@ -88,15 +91,13 @@ class MonteCarloBasketVC(object):
     def value_with_control_variate(self):
         path1, path2 = self.price_paths()
 
-        # geometric_average = np.exp((1 / float(self.n)) * 1 / 2 * (np.sum(np.log(path1), 1) + np.sum(np.log(path2), 1)))
-        # geometric_average = np.exp((1 / float(self.n)) * np.log(path1 + path2))
+        self.basket_geo()
 
-        # print(geometric_average)
-        geo1, geo2 = self.basket_geo()
-        geoMean = np.exp((1 / 2) * (np.log(geo1) + np.log(geo2)))
+        geoMean = np.exp((1 / 2) * (np.log(path1) + np.log(path2)))
+        geoMean = np.exp((1 / float(self.n)) * np.sum(np.log(geoMean), 1))
 
-        geo_payoff_call = np.exp(-self.r * self.T) * max(geoMean - self.K, 0)
-        geo_payoff_put = np.exp(-self.r * self.T) * max(self.K - geoMean, 0)
+        geo_payoff_call = np.exp(-self.r * self.T) * np.maximum(geoMean - self.K, 0)
+        geo_payoff_put = np.exp(-self.r * self.T) * np.maximum(self.K - geoMean, 0)
 
         mc_payoff = self.mc_payoff()
         Bg0 = np.sqrt(self.s1 * self.s2)
@@ -110,7 +111,7 @@ class MonteCarloBasketVC(object):
         else:
             # implement the closed-from formula for Geometric Mean Basket Put Option
             geo_put = np.exp(-self.r * self.T) * (self.K * N(-self.d2) - Bg0 * np.exp(self.muT) * N(-self.d1))
-            value_with_CV = mc_payoff + geo_put - geo_payoff_call
+            value_with_CV = mc_payoff + geo_put - geo_payoff_put
 
         value_with_control_variate = np.mean(value_with_CV, 0)
         value_with_control_variate_std = np.std(value_with_CV, 0)
@@ -126,6 +127,7 @@ class MonteCarloBasketVC(object):
             return self.value_with_control_variate()
 
 
-# myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call', True)
+myBasketCall = MonteCarloBasketVC(4, 5, 0.25, 0.2, 0.03, 0.2, 1, 1, 100, 10000, 'call', True)
 # print(myBasketCall.value())
-# print(myBasketCall.value_with_control_variate())
+# myBasketCall.value_with_control_variate()
+print(myBasketCall.value_with_control_variate())

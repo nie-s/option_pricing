@@ -70,6 +70,7 @@ class MonteCarloAsianVC(object):
     def value_with_control_variate(self):
 
         geometric_average = np.exp((1 / float(self.n)) * np.sum(np.log(self.price_path()), 1))
+        print(geometric_average)
 
         if self.option_type == 'call':
             mc_payoff_geo = self.discount * np.maximum(geometric_average - self.K, 0)
@@ -83,7 +84,6 @@ class MonteCarloAsianVC(object):
 
         upper_bound_CV = value_with_control_variate + 1.96 * value_with_control_variate_std / np.sqrt(self.m)
         lower_bound_CV = value_with_control_variate - 1.96 * value_with_control_variate_std / np.sqrt(self.m)
-        print(value_with_control_variate, lower_bound_CV, upper_bound_CV)
         return value_with_control_variate, lower_bound_CV, upper_bound_CV
 
     def get_result(self):
@@ -93,6 +93,6 @@ class MonteCarloAsianVC(object):
             return self.value_with_control_variate()
 
 
-# myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call', True)
+myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call', True)
 # print(myAsianCall.value())
-# print(myAsianCall.value_with_control_variate())
+print(myAsianCall.value_with_control_variate())
