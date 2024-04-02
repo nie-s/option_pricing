@@ -13,7 +13,7 @@ title = 'QMA KIKO Put'
 
 """
 
-How Current Price Affects Put Option price
+#How Current Price Affects Put Option price
 
 """
 
@@ -45,7 +45,7 @@ plt.show()
 
 """
 
-How Maturity Affects Put Option Price
+#How Maturity Affects Put Option Price
 
 """
 
@@ -76,7 +76,7 @@ plt.show()
 
 """
 
-How Risk Free Rate Affects Put Option Price
+#How Risk Free Rate Affects Put Option Price
 
 """
 
@@ -85,6 +85,7 @@ K = 9
 L = 9.3
 U = 10.2
 R = 5
+T = 1.0
 sigma0 = 0.1
 m = 10**5
 n = 10
@@ -115,12 +116,13 @@ K = 9
 L = 9.3
 U = 10.2
 R = 5
+T = 1.0
 r = 0.06
 sigma0 = 0.1
 m = 10**5
 price=[]
 param=[]
-for n in range(10,500):
+for n in range(10,50,10):
     C = QMonteCarloKIKOPut(s0, K, L, U, R, r, sigma0, T, m, n)
     price.append(C.calculate_price_and_delta()[0])
     param.append(n)
