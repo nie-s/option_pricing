@@ -42,7 +42,7 @@ class MonteCarloAsianVC(object):
             geometric_value = self.discount * (self.s0 * np.exp(muT) * N(d1) - self.K * N(d2))
         else:
             geometric_value = self.discount * (-self.s0 * np.exp(muT) * N(-d1) + self.K * N(-d2))
-
+        print(geometric_value)
         return geometric_value
 
     def price_path(self, seed=100):
@@ -84,6 +84,7 @@ class MonteCarloAsianVC(object):
 
         upper_bound_CV = value_with_control_variate + 1.96 * value_with_control_variate_std / np.sqrt(self.m)
         lower_bound_CV = value_with_control_variate - 1.96 * value_with_control_variate_std / np.sqrt(self.m)
+        print(value_with_control_variate, lower_bound_CV, upper_bound_CV)
         return value_with_control_variate, lower_bound_CV, upper_bound_CV
 
     def get_result(self):
@@ -93,6 +94,6 @@ class MonteCarloAsianVC(object):
             return self.value_with_control_variate()
 
 
-myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call', True)
+#myAsianCall = MonteCarloAsianVC(4, 0.25, 0.03, 1, 4, 100, 10000, 'call', True)
 # print(myAsianCall.value())
-print(myAsianCall.value_with_control_variate())
+#print(myAsianCall.value_with_control_variate())
