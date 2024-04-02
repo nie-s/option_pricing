@@ -85,7 +85,7 @@ class MonteCarloBasketVC(object):
         mc_value_std = np.std(self.mc_payoff())
         upper_bound = mc_value + 1.96 * mc_value_std / np.sqrt(self.m)
         lower_bound = mc_value - 1.96 * mc_value_std / np.sqrt(self.m)
-
+        print(mc_value, lower_bound, upper_bound)
         return mc_value, lower_bound, upper_bound
 
     def value_with_control_variate(self):
@@ -118,6 +118,7 @@ class MonteCarloBasketVC(object):
 
         upper_bound_CV = value_with_control_variate + 1.96 * value_with_control_variate_std / np.sqrt(self.m)
         lower_bound_CV = value_with_control_variate - 1.96 * value_with_control_variate_std / np.sqrt(self.m)
+        print(value_with_control_variate, lower_bound_CV, upper_bound_CV)
         return value_with_control_variate, lower_bound_CV, upper_bound_CV
 
     def get_result(self):
