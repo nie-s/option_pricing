@@ -78,6 +78,7 @@ class QMonteCarloKIKOPut:
     def calculate_price_and_delta(self):
         option_price = self.calculate_option_price()
         delta = self.kiko_put_option_price_delta()
+        print(option_price,delta)
         return option_price,delta
     
     def get_result(self):
