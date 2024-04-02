@@ -3,7 +3,7 @@ import pandas as pd
 from scipy.stats import norm, qmc
 
 class QMonteCarloKIKOPut:
-    def __init__(self, s0, K, L, U, R, r, sigma0, T, m, seed, n):
+    def __init__(self, s0, K, L, U, R, r, sigma0, T, m, n):
         self.s0 = s0  # Current stock price
         self.K = K  # Strike price
         self.L = L  # Lower barrier
@@ -15,7 +15,7 @@ class QMonteCarloKIKOPut:
         self.m = m  # Number of samples
         self.n = n  # Number of observation time
         self.delta_t = T / n  # Time step size
-        self.seed = seed
+        self.seed = np.random.seed(42)
 
     def simulate_stock_path(self):
         stock_path = np.zeros((self.n + 1, self.m))
@@ -70,8 +70,8 @@ class QMonteCarloKIKOPut:
     
     def kiko_put_option_price_delta(self, e=0.01):
         p0 = self.calculate_option_price()
-        p1 = QMonteCarloKIKOPut(self.s0 * (1 + e / 2), self.K, self.L, self.U, self.R, self.r, self.sigma0, self.T, self.m, self.seed, self.n).calculate_option_price()
-        p2 = QMonteCarloKIKOPut(self.s0 * (1 - e / 2), self.K, self.L, self.U, self.R, self.r, self.sigma0, self.T, self.m, self.seed, self.n).calculate_option_price()
+        p1 = QMonteCarloKIKOPut(self.s0 * (1 + e / 2), self.K, self.L, self.U, self.R, self.r, self.sigma0, self.T, self.m, self.n).calculate_option_price()
+        p2 = QMonteCarloKIKOPut(self.s0 * (1 - e / 2), self.K, self.L, self.U, self.R, self.r, self.sigma0, self.T, self.m, self.n).calculate_option_price()
         delta = (p1 - p2) / (self.s0 * e)
         return delta
     

@@ -31,7 +31,7 @@ param=[]
 for s0 in range(95,105,1):
     s0 = s0 * 0.1
     C = QMonteCarloKIKOPut(s0, K, L, U, R, r, sigma0, T, m, n)
-    price.append(C.calculate_price_and_delta())
+    price.append(C.calculate_price_and_delta()[0])
     param.append(s0)
 
 plt.plot(param,price)
@@ -63,7 +63,7 @@ param=[]
 for T in range(1,40,1):
     T = T * 0.2
     C = QMonteCarloKIKOPut(s0, K, L, U, R, r, sigma0, T, m, n)
-    price.append(C.calculate_price_and_delta())
+    price.append(C.calculate_price_and_delta()[0])
     param.append(T)
 plt.plot(param,price)
 # naming the x axis
@@ -93,7 +93,7 @@ param=[]
 for r in range(1,9,1):
     r = r * 0.01
     C = QMonteCarloKIKOPut(s0, K, L, U, R, r, sigma0, T, m, n)
-    price.append(C.calculate_price_and_delta())
+    price.append(C.calculate_price_and_delta()[0])
     param.append(r)
 plt.plot(param,price)
 # naming the x axis
@@ -122,7 +122,7 @@ price=[]
 param=[]
 for n in range(10,500):
     C = QMonteCarloKIKOPut(s0, K, L, U, R, r, sigma0, T, m, n)
-    price.append(C.calculate_price_and_delta())
+    price.append(C.calculate_price_and_delta()[0])
     param.append(n)
 plt.plot(param,price)
 # naming the x axis
